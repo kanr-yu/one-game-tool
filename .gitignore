@@ -1,0 +1,26 @@
+# Build output and publish packages
+[Bb]in/
+[Oo]bj/
+artifacts/
+publish/
+
+# Machine-local SDK, package cache and temporary tools
+.tools/
+.nuget/
+
+# IDE and user settings
+.vs/
+.idea/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs and OS-generated files
+*.log
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
+Desktop.ini

@@ -1,0 +1,86 @@
+<ui:FluentWindow x:Class="GameDeck.MainWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                 xmlns:pages="clr-namespace:GameDeck.Views.Pages"
+                 Title="GameDeck · 游戏管理中心"
+                 Width="1280" Height="840" MinWidth="1060" MinHeight="700"
+                 WindowStartupLocation="CenterScreen" WindowStyle="None"
+                 ExtendsContentIntoTitleBar="True" WindowBackdropType="None"
+                 Background="{StaticResource ShellBrush}" Foreground="{StaticResource TextBrush}"
+                 FontFamily="Segoe UI, Microsoft YaHei UI" Loaded="Window_Loaded"
+                 StateChanged="Window_StateChanged">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="52" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+
+        <Grid Background="{StaticResource ShellBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Border Background="Transparent" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <StackPanel Orientation="Horizontal" Margin="22,0,0,0" VerticalAlignment="Center">
+                    <Border Background="{StaticResource AccentBrush}" CornerRadius="7" Width="27" Height="27" Margin="0,0,10,0">
+                        <TextBlock Text="G" FontWeight="Black" Foreground="#10251E" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <TextBlock Text="GAMEDECK" FontSize="13" FontWeight="Bold" VerticalAlignment="Center" />
+                    <TextBlock Text=" /  你的本地游戏空间" Foreground="{StaticResource MutedBrush}" FontSize="11" Margin="12,0,0,0" VerticalAlignment="Center" />
+                </StackPanel>
+            </Border>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
+                <Button Style="{StaticResource CaptionButton}" Content="&#xE921;" Click="Minimize_Click" ToolTip="最小化" AutomationProperties.Name="最小化" />
+                <Button x:Name="MaximizeButton" Style="{StaticResource CaptionButton}" Content="&#xE922;" Click="Maximize_Click" ToolTip="最大化" AutomationProperties.Name="最大化" />
+                <Button Content="&#xE8BB;" Click="Close_Click" ToolTip="关闭" AutomationProperties.Name="关闭">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource CaptionButton}">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#C42B3D" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </StackPanel>
+        </Grid>
+
+        <ui:NavigationView x:Name="RootNavigation" Grid.Row="1"
+                           PaneDisplayMode="Left" OpenPaneLength="224" IsPaneOpen="True"
+                           IsPaneToggleVisible="False" IsBackButtonVisible="Collapsed"
+                           Transition="FadeIn" TransitionDuration="180"
+                           ContentOverlay="{x:Null}" FrameMargin="0" Padding="0">
+            <ui:NavigationView.PaneHeader>
+                <StackPanel Margin="24,22,20,24">
+                    <TextBlock Text="WORKSPACE" Style="{StaticResource Eyebrow}" Foreground="{StaticResource MutedBrush}" />
+                    <TextBlock Text="游戏管理中心" FontSize="18" FontWeight="SemiBold" Margin="0,8,0,0" />
+                </StackPanel>
+            </ui:NavigationView.PaneHeader>
+            <ui:NavigationView.MenuItems>
+                <ui:NavigationViewItem Content="游戏库" Icon="{ui:SymbolIcon Games24}" TargetPageType="{x:Type pages:GameLibraryPage}" NavigationCacheMode="Enabled" Margin="10,2" />
+                <ui:NavigationViewItem Content="存储与缓存" Icon="{ui:SymbolIcon Folder24}" TargetPageType="{x:Type pages:StorageCachePage}" NavigationCacheMode="Enabled" Margin="10,2" />
+                <ui:NavigationViewItem Content="性能与面板" Icon="{ui:SymbolIcon Flash24}" TargetPageType="{x:Type pages:PerformancePage}" NavigationCacheMode="Enabled" Margin="10,2" />
+                <ui:NavigationViewItem Content="设置与自律" Icon="{ui:SymbolIcon Settings24}" TargetPageType="{x:Type pages:SettingsPage}" NavigationCacheMode="Enabled" Margin="10,2" />
+            </ui:NavigationView.MenuItems>
+            <ui:NavigationView.PaneFooter>
+                <Border Style="{StaticResource Card}" Padding="16" Margin="16,0,16,22" Background="#1C2524">
+                    <StackPanel>
+                        <TextBlock Text="让空间，留给热爱。" Foreground="{StaticResource AccentBrush}" FontWeight="SemiBold" FontSize="13" />
+                        <TextBlock Text="整理游戏，轻装上场。" Style="{StaticResource MutedText}" Margin="0,8,0,16" FontSize="11" />
+                        <TextBlock Text="●  本地模式  /  UI 预览" FontSize="10" Foreground="{StaticResource MutedBrush}" />
+                    </StackPanel>
+                </Border>
+            </ui:NavigationView.PaneFooter>
+        </ui:NavigationView>
+
+        <Border Grid.Row="2" BorderBrush="{StaticResource LineBrush}" BorderThickness="0,1,0,0" Padding="22,0">
+            <DockPanel VerticalAlignment="Center">
+                <TextBlock DockPanel.Dock="Right" Text="v0.1.0  ·  PREVIEW" Foreground="{StaticResource MutedBrush}" FontSize="10" />
+                <TextBlock Text="●  演示数据 · 所有操作仅展示交互效果" Foreground="{StaticResource MutedBrush}" FontSize="10" />
+            </DockPanel>
+        </Border>
+    </Grid>
+</ui:FluentWindow>
