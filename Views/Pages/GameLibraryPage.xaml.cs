@@ -1,35 +1,33 @@
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using GameDeck.Models;
+using System.Windows.Input;
+using GameDeck.ViewModels;
 
 namespace GameDeck.Views.Pages;
 
 public partial class GameLibraryPage : Page
 {
-    private readonly CollectionViewSource _gamesSource = new() { Source = PreviewData.Games };
+    public GameLibraryViewModel ViewModel { get; }
 
-    public GameLibraryPage()
+    public GameLibraryPage() : this(new GameLibraryViewModel()) { }
+
+    public GameLibraryPage(GameLibraryViewModel viewModel)
     {
+        ViewModel = viewModel;
         InitializeComponent();
-        _gamesSource.Filter += (_, e) =>
-        {
-            var game = (GamePreview)e.Item;
-            string query = SearchBox.Text.Trim();
-            e.Accepted = game.Name.Contains(query, StringComparison.OrdinalIgnoreCase)
-                         || game.EnglishName.Contains(query, StringComparison.OrdinalIgnoreCase)
-                         || game.Platform.Contains(query, StringComparison.OrdinalIgnoreCase);
-        };
-        GamesList.ItemsSource = _gamesSource.View;
+        DataContext = ViewModel;
     }
 
-    private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+    private async void Page_Loaded(object sender, RoutedEventArgs e)
+        => await ViewModel.InitializeAsync();
+
+    private void Root_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
     {
-        // TextChanged may run while InitializeComponent is still constructing the page.
-        if (GamesList is null || EmptyState is null) return;
-        _gamesSource.View.Refresh();
-        int count = _gamesSource.View.Cast<GamePreview>().Count();
-        ResultsLabel.Text = $"{count} 款游戏";
-        EmptyState.Visibility = count == 0 ? Visibility.Visible : Visibility.Collapsed;
+        if (GameListScrollViewer is not null)
+        {
+            double newOffset = GameListScrollViewer.VerticalOffset - e.Delta;
+            GameListScrollViewer.ScrollToVerticalOffset(newOffset);
+            e.Handled = true;
+        }
     }
 }

@@ -1,39 +1,40 @@
 # One Game Tool · GameDeck
 
-**v0.1.0** · C# · .NET 8 · WPF · WPF UI · MIT
+**v0.1.1** · C# · .NET 8 · WPF · WPF UI · SQLite · MIT
 
-Windows 本地游戏管理与缓存清理界面原型。
-Windows desktop UI prototype for game management and cache cleanup.
+Windows 本地游戏管理工具：添加本地游戏、保存游戏库并启动游戏。
+A Windows game manager with local executable import, a persistent library, and game launching.
 
 [简体中文](#简体中文) | [English](#english)
 
 ## 简体中文
 
-### 项目介绍
+### v0.1.1 已实现
 
-One Game Tool 的首个版本以 GameDeck 为界面名称，提供深色 Fluent 窗口、四页导航与完整的占位交互，作为后续开发真实功能的基础。
+- **手动添加游戏**：选择 EXE，以文件名作为默认游戏名，自动记录安装目录和 LOCAL 平台。
+- **SQLite 持久化**：游戏记录保存在当前用户的 `%LOCALAPPDATA%\GameSentinel\data.db`，重启后自动读取。
+- **应用图标封面**：优先提取 256px 图标，保存为 `GameSentinel\Covers\<Guid>.png`；源文件没有高清图标或提取失败时使用可用图标或默认封面。
+- **异步容量统计**：后台递归统计安装目录，跳过受限文件和重解析点，避免遍历循环；自动更新游戏数量及容量总和。
+- **启动游戏**：将进程工作目录显式设为安装目录，成功创建进程后保存带时区偏移的最后游玩时间。
+- **滚轮与删除**：卡片区域采用像素级滚动；右上角删除按钮提供「仅从列表移除」和「彻底删除游戏本体」，永久删除还会显示目录进行第二次确认。删除后自动刷新数量和容量。
+- **真实数据绑定**：使用 ObservableCollection 与 ViewModel，支持名称、平台、路径搜索、空列表、加载进度、重复添加提示和错误恢复。
 
-> **当前版本仅为 UI 原型。** 游戏启动、平台扫描、备份、恢复、无损搬家、清理、自动提权和实际 HUD 均未接入后台。点击相关按钮或开关只显示“功能开发中”，不会执行这些业务操作。
+> 存储清理、备份、恢复、搬家、平台扫描、自动提权、休息提醒和实际 HUD 仍是占位功能。存储与性能页面仍使用演示数据。游戏库不再预置虚拟游戏。
 
-### 页面与交互
+### 页面
 
-| 页面 | 内容 |
+| 页面 | 状态 |
 | --- | --- |
-| 🎮 游戏库 | 三个虚拟游戏卡片；关键词搜索；手动添加、扫描、启动、备份和搬家入口 |
-| 💾 存储与缓存 | 磁盘空间进度；18.2 GB 着色器缓存、5.1 GB 下载残留、1.2 GB 临时垃圾；历史备份列表 |
-| ⚡ 性能与面板 | Windows 11 风格开关；静态 HUD 预览；悬浮窗测试入口 |
-| ⚙️ 设置与自律 | 封面缓存清理、数据库优化入口和休息提醒开关 |
+| 🎮 游戏库 | 真实本地添加、持久化、搜索、统计与启动 |
+| 💾 存储与缓存 | 界面预览：磁盘、缓存和历史备份均为演示数据 |
+| ⚡ 性能与面板 | 界面预览：开关与静态 HUD |
+| ⚙️ 设置与自律 | 界面预览：维护入口与提醒开关 |
 
-已实现的本地交互包括窗口拖动、双击最大化、自定义最小化 / 最大化 / 关闭按钮、页面切换、中文 / 英文 / 平台关键词过滤、空结果提示及占位弹窗。搜索和开关状态在当前运行期间保留，重启后恢复默认值。
+窗口支持拖动、双击最大化及自定义最小化 / 最大化 / 关闭按钮。界面目前使用中文。
 
-### 环境要求
+### 环境与运行
 
-- Windows。
-- .NET 8 SDK：8.0.400 或更新的 8.0 SDK，用于从源码构建。
-- 可选：支持上述 SDK 且安装了“.NET 桌面开发”工作负载的 Visual Studio。
-- 运行构建后的程序需要 .NET 8 Desktop Runtime；首次还原依赖需要访问 NuGet。
-
-### 快速开始
+需要 Windows 和 .NET 8 SDK（8.0.400 或更新的 8.0 SDK）。运行框架依赖构建需要 .NET 8 Desktop Runtime，首次还原包需要访问 NuGet。
 
 ~~~powershell
 git clone https://github.com/kanr-yu/one-game-tool.git
@@ -43,51 +44,65 @@ dotnet build GameDeck.sln --configuration Release --no-restore
 dotnet run --project GameDeck.csproj --configuration Release --no-build
 ~~~
 
-也可以在 Visual Studio 中打开 `GameDeck.sln`。
+也可以在安装了“.NET 桌面开发”工作负载的 Visual Studio 中打开 `GameDeck.sln`。
 
-### 开发与验证
+### 使用与数据
 
-项目使用 `global.json` 选择 .NET 8 SDK，并使用 `packages.lock.json` 锁定依赖图。Windows 构建工作流在 push / pull request 时执行依赖还原与 Release 编译。
+1. 打开游戏库，点击「手动添加游戏」并选择游戏真正的 EXE。
+2. 等待图标提取与目录统计完成，卡片和顶部统计会自动更新。
+3. 点击「启动游戏」；重启软件后仍可查看已添加的记录和游玩时间。
+4. 卡片右上角可移除游戏；仅移除保留本体，彻底删除会永久移除整个安装目录及其中全部文件，不经过回收站。
 
-v0.1.0 已在 Windows 使用 .NET SDK 8.0.427 完成 Release 编译。四页导航、中文搜索、空结果提示、占位弹窗、HUD 开关状态保留及窗口控制已进行人工检查。项目目前没有自动化 GUI 测试；最新远程构建结果请查看 [Actions](https://github.com/kanr-yu/one-game-tool/actions)。
+数据库和封面均在当前用户目录，不写入游戏安装目录。重复路径不会重复添加。容量按每条记录的安装目录统计；同目录的多个 EXE 会分别计入总和，受限文件和目录链接不计入大小。
 
-磁盘、帧率、日期、容量和游戏信息均为静态演示数据。海报由本地 XAML 绘制，不需要外部图片。
+首次升级自 v0.1.0 时，游戏库为空；旧版本的三张游戏卡片只是演示数据，不会导入数据库。
 
-- [开发说明（中文）](docs/DEVELOPMENT.md)
-- [GitHub 协作与上传说明（中文）](docs/GITHUB.md)
+### 校验与文档
+
+~~~powershell
+dotnet run --project Tests/GameDeck.IntegrationTests/GameDeck.IntegrationTests.csproj --configuration Release --no-build
+~~~
+
+集成校验使用独立临时数据库、测试图标和受控子进程，不启动用户的真实游戏，也不修改真实游戏库。14 组检查涵盖持久化、导入、启动、删除与取消、文件占用、目录边界、缓存失败、动态统计及 WPF 命令和滚轮路由。
+
+Windows CI 执行锁定还原、Release 构建与集成校验。最新远程结果见 [Actions](https://github.com/kanr-yu/one-game-tool/actions)。
+
+- [开发说明](docs/DEVELOPMENT.md)
+- [数据库与数据目录](docs/DATABASE.md)
+- [GitHub 协作说明](docs/GITHUB.md)
+- [v0.1.1 更新说明](docs/releases/v0.1.1.md)
 - [更新记录](CHANGELOG.md)
 
 ---
 
 ## English
 
-### About
+### Implemented in v0.1.1
 
-One Game Tool v0.1.0 introduces **GameDeck**, a Windows desktop UI shell with a dark Fluent window, four navigation pages, and placeholder interactions for future game management features.
+- **Manual game import:** select an EXE; its filename becomes the default game name, with the installation folder and LOCAL platform recorded.
+- **SQLite persistence:** the library is stored in `%LOCALAPPDATA%\GameSentinel\data.db` and loaded when the library page opens.
+- **Executable icon covers:** request a 256px icon and save it as `GameSentinel\Covers\<Guid>.png`. Smaller source icons or a default cover are used when a high-resolution icon is unavailable.
+- **Background size calculation:** recursively scan the installation directory, skip inaccessible entries and reparse points, and update the collection count and total size.
+- **Game launching:** explicitly set the process working directory to the installation folder. Save an ISO 8601 last-played timestamp after a process has been started.
+- **Scrolling and removal:** pixel-based wheel scrolling works over game cards. The top-right delete button offers list-only removal or permanent installation-folder deletion, with an additional path confirmation for permanent deletion. Totals refresh automatically.
+- **Bound UI:** an ObservableCollection-backed ViewModel drives search, statistics, empty states, loading feedback, duplicate detection, and error recovery.
 
-> **This release is a UI prototype.** Game launching, platform scanning, save backup and restore, game migration, cleanup, privilege elevation, and a real in-game HUD have no backend implementation. Their buttons and switches only display a development notice; they do not perform those operations.
+> Storage cleanup, save backup/restore, migration, platform scanning, privilege elevation, reminders, and a real HUD remain placeholders. Storage and performance pages still show demo data. The game library no longer contains seeded fictional games.
 
-### Pages and interactions
+### Pages
 
-| Page | Contents |
+| Page | Status |
 | --- | --- |
-| 🎮 Game Library | Three fictional game cards; search; add, scan, launch, backup, and migration entry points |
-| 💾 Storage & Cache | Disk usage bar; 18.2 GB shader cache, 5.1 GB download leftovers, 1.2 GB temporary files; backup history |
-| ⚡ Performance & HUD | Windows 11 style switches; a static HUD preview; an overlay test entry point |
-| ⚙️ Settings & Discipline | Cover cache and database maintenance entry points; a break reminder switch |
+| 🎮 Game Library | Real local import, persistence, search, statistics, and launch |
+| 💾 Storage & Cache | UI preview with demo disk, cache, and backup records |
+| ⚡ Performance & HUD | UI preview with switches and a static HUD |
+| ⚙️ Settings & Discipline | UI preview with maintenance and reminder entry points |
 
-Working UI interactions include window dragging, double-click maximization, custom minimize / maximize / close controls, page navigation, filtering by Chinese or English game names and platform names, empty search results, and placeholder dialogs. Search and switch states persist for the current session and reset after restarting.
+Window dragging, double-click maximization, and custom window controls are available. The application interface is currently in Chinese.
 
-The application interface and development dialogs are currently in Chinese. This README provides both Chinese and English documentation.
+### Requirements and setup
 
-### Requirements
-
-- Windows.
-- .NET 8 SDK, version 8.0.400 or a newer 8.0 SDK, to build from source.
-- Optional: Visual Studio with support for that SDK and the .NET desktop development workload.
-- .NET 8 Desktop Runtime to run the framework-dependent build; NuGet access for the initial dependency restore.
-
-### Getting started
+Use Windows and .NET 8 SDK 8.0.400 or a newer 8.0 SDK. The framework-dependent build needs .NET 8 Desktop Runtime. Initial package restore requires NuGet access.
 
 ~~~powershell
 git clone https://github.com/kanr-yu/one-game-tool.git
@@ -97,32 +112,50 @@ dotnet build GameDeck.sln --configuration Release --no-restore
 dotnet run --project GameDeck.csproj --configuration Release --no-build
 ~~~
 
-Alternatively, open `GameDeck.sln` in Visual Studio.
+Alternatively, open `GameDeck.sln` in Visual Studio with the .NET desktop development workload.
 
-### Development and validation
+### Usage and data
 
-`global.json` selects a .NET 8 SDK, and `packages.lock.json` locks the dependency graph. The Windows workflow restores dependencies and builds Release on pushes and pull requests.
+1. Open the library, choose manual import, and select the game's actual executable.
+2. Wait for icon extraction and directory scanning; cards and statistics update automatically.
+3. Launch the game. Imported records and last-played timestamps remain available after restarting.
+4. Use the card's top-right delete button. List-only removal preserves game files; permanent deletion removes the entire installation folder and its contents without using the Recycle Bin.
 
-v0.1.0 has been built locally on Windows with .NET SDK 8.0.427. Navigation, Chinese search, empty results, placeholder dialogs, HUD switch state retention, and window controls have been manually checked. There are no automated GUI tests yet. See [Actions](https://github.com/kanr-yu/one-game-tool/actions) for the latest remote build status.
+The application writes its database and covers to the current user's local application data directory, not the game directory. Duplicate paths are rejected. Size totals add each record's installation-directory size; multiple executables in one folder are counted separately. Inaccessible entries and directory links are excluded.
 
-All disk usage, frame rates, dates, sizes, and game details are static demo data. Poster placeholders are drawn in XAML and require no external images.
+When upgrading from v0.1.0, the persistent library starts empty. The original three game cards were demo records and are not migrated.
+
+### Validation and documentation
+
+~~~powershell
+dotnet run --project Tests/GameDeck.IntegrationTests/GameDeck.IntegrationTests.csproj --configuration Release --no-build
+~~~
+
+Integration checks use temporary databases, a test icon, and controlled subprocesses. They do not launch real games or modify the user's library. Fourteen checks cover persistence, import, launch, removal and cancellation, locked files, directory boundaries, cache failures, statistics, WPF command bindings, and wheel routing.
+
+Windows CI runs a locked restore, Release build, and integration checks. See [Actions](https://github.com/kanr-yu/one-game-tool/actions) for remote results.
 
 - [Development guide (Chinese)](docs/DEVELOPMENT.md)
+- [Database and storage guide (Chinese)](docs/DATABASE.md)
 - [GitHub collaboration guide (Chinese)](docs/GITHUB.md)
+- [v0.1.1 release notes](docs/releases/v0.1.1.md)
 - [Changelog](CHANGELOG.md)
 
 ## 项目结构 / Project layout
 
 ~~~text
 one-game-tool/
-├── .github/workflows/build.yml   # Windows CI
-├── docs/                        # Development and GitHub guides
-├── Infrastructure/              # Shared placeholder command
-├── Models/                      # Demo data
-├── Themes/                      # Dark theme styles
-├── Views/Pages/                 # Four pages
-├── App.xaml                     # Application resources
-├── MainWindow.xaml              # Window and navigation
+├── .github/workflows/build.yml
+├── docs/
+├── Infrastructure/              # Commands, binding helpers, formatting
+├── Models/                      # GameItem and remaining preview data
+├── Services/                    # SQLite, import, icon, size, process, dialogs
+├── ViewModels/                  # Observable game library state
+├── Views/Pages/
+├── Themes/
+├── Tests/GameDeck.IntegrationTests/
+├── App.xaml
+├── MainWindow.xaml
 ├── GameDeck.csproj
 ├── GameDeck.sln
 ├── global.json
@@ -133,9 +166,10 @@ one-game-tool/
 
 ## 许可证与依赖 / License and dependencies
 
-本项目使用 [MIT 许可证](LICENSE)。第三方依赖遵循各自许可证，通过 NuGet 还原，不随源码仓库提交。
+本项目使用 [MIT 许可证](LICENSE)。第三方依赖通过 NuGet 还原，遵循各自许可证。
 
-This project is licensed under the [MIT License](LICENSE). Third-party dependencies retain their own licenses and are restored through NuGet rather than committed to this repository.
+This project uses the [MIT License](LICENSE). NuGet dependencies retain their own licenses.
 
-- [WPF UI / WPF-UI 4.3.0](https://github.com/lepoco/wpfui) — MIT.
-- [Navigation documentation](https://wpfui.lepo.co/documentation/navigation-view.html) / [Theme documentation](https://wpfui.lepo.co/documentation/themes.html).
+- [WPF UI 4.3.0](https://github.com/lepoco/wpfui)
+- [Microsoft.Data.Sqlite 8.0.33](https://www.nuget.org/packages/Microsoft.Data.Sqlite/8.0.33)
+- [System.Drawing.Common 8.0.33](https://www.nuget.org/packages/System.Drawing.Common/8.0.33)

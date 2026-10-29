@@ -33,8 +33,16 @@ git push origin main
 - 源码仓库只放可还原、可构建的源文件。
 - 不要提交 `.git/`、`.tools/`、`bin/`、`obj/` 或本地源码 ZIP。
 - 可运行程序可通过 GitHub Releases 单独发布。当前框架依赖构建需要 .NET 8 Desktop Runtime，应整体打包输出目录，不能只分发 EXE。
-- `v0.1.0` 是首个 UI 原型版本，真实清理、备份、启动与 HUD 均未实现。
+- v0.1.0 是 UI 原型；v0.1.1 已实现本地游戏库、SQLite 与启动，清理、备份和 HUD 仍未实现。
 
-push / pull request 会触发 Windows 构建工作流，也可在 Actions 中手动运行。工作流只检查构建，不运行 GUI。
+push / pull request 会触发 Windows 构建工作流，也可在 Actions 中手动运行。工作流执行构建和隔离集成校验，不打开实际游戏或可见应用窗口。
 
 工作流参考：[GitHub .NET 文档](https://docs.github.com/en/actions/tutorials/build-and-test-code/net)、[actions/checkout](https://github.com/actions/checkout)、[actions/setup-dotnet](https://github.com/actions/setup-dotnet)。
+
+## v0.1.1 提交与版本说明
+
+- 建议提交说明：Release v0.1.1: local library, SQLite and interaction fixes
+- 在 GitHub Desktop 检查 Changes，提交源码和文档；缓存和 artifacts 已由 .gitignore 排除。
+- 若要发布版本，在 History 对本次提交创建 v0.1.1 标签，再推送提交和标签。
+- GitHub Release 标题使用 v0.1.1，正文可复制 [版本说明](releases/v0.1.1.md)。
+- 此次整理不会自动创建提交、标签或远程 Release。

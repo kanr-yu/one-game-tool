@@ -70,7 +70,7 @@
                     <StackPanel>
                         <TextBlock Text="让空间，留给热爱。" Foreground="{StaticResource AccentBrush}" FontWeight="SemiBold" FontSize="13" />
                         <TextBlock Text="整理游戏，轻装上场。" Style="{StaticResource MutedText}" Margin="0,8,0,16" FontSize="11" />
-                        <TextBlock Text="●  本地模式  /  UI 预览" FontSize="10" Foreground="{StaticResource MutedBrush}" />
+                        <TextBlock Text="●  本地模式  /  v0.1.1" FontSize="10" Foreground="{StaticResource MutedBrush}" />
                     </StackPanel>
                 </Border>
             </ui:NavigationView.PaneFooter>
@@ -78,8 +78,8 @@
 
         <Border Grid.Row="2" BorderBrush="{StaticResource LineBrush}" BorderThickness="0,1,0,0" Padding="22,0">
             <DockPanel VerticalAlignment="Center">
-                <TextBlock DockPanel.Dock="Right" Text="v0.1.0  ·  PREVIEW" Foreground="{StaticResource MutedBrush}" FontSize="10" />
-                <TextBlock Text="●  演示数据 · 所有操作仅展示交互效果" Foreground="{StaticResource MutedBrush}" FontSize="10" />
+                <TextBlock DockPanel.Dock="Right" Text="v0.1.1  ·  PREVIEW" Foreground="{StaticResource MutedBrush}" FontSize="10" />
+                <TextBlock Text="●  本地游戏库已启用 · 存储与性能页为演示数据" Foreground="{StaticResource MutedBrush}" FontSize="10" />
             </DockPanel>
         </Border>
     </Grid>

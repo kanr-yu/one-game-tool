@@ -5,6 +5,10 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDeck", "GameDeck.csproj", "{76F44D5C-7EB7-4569-ADA8-628E46D17D2D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{41452A29-26D1-4E9B-88BD-05799FAF205C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameDeck.IntegrationTests", "Tests\GameDeck.IntegrationTests\GameDeck.IntegrationTests.csproj", "{D2D048C5-CD12-471C-B548-E60CAEEC8158}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,12 @@ Global
 		{76F44D5C-7EB7-4569-ADA8-628E46D17D2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76F44D5C-7EB7-4569-ADA8-628E46D17D2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76F44D5C-7EB7-4569-ADA8-628E46D17D2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2D048C5-CD12-471C-B548-E60CAEEC8158}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2D048C5-CD12-471C-B548-E60CAEEC8158}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2D048C5-CD12-471C-B548-E60CAEEC8158}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2D048C5-CD12-471C-B548-E60CAEEC8158}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D2D048C5-CD12-471C-B548-E60CAEEC8158} = {41452A29-26D1-4E9B-88BD-05799FAF205C}
 	EndGlobalSection
 EndGlobal

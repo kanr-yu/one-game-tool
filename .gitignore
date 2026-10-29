@@ -24,3 +24,8 @@ publish/
 .DS_Store
 Thumbs.db
 Desktop.ini
+
+# User databases
+*.db
+*.db-shm
+*.db-wal

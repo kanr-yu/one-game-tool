@@ -32,3 +32,6 @@ jobs:
 
       - name: Build Release
         run: dotnet build GameDeck.sln --configuration Release --no-restore -p:ContinuousIntegrationBuild=true
+
+      - name: Run isolated integration checks
+        run: dotnet run --project Tests/GameDeck.IntegrationTests/GameDeck.IntegrationTests.csproj --configuration Release --no-build

@@ -55,7 +55,7 @@
             </Border>
             <DockPanel Margin="0,26,0,0">
                 <TextBlock DockPanel.Dock="Right" Text="C# · .NET 8 · WPF UI" Style="{StaticResource MutedText}" FontSize="11" />
-                <TextBlock Text="GameDeck  /  v0.1.0 Preview" Style="{StaticResource MutedText}" FontSize="11" />
+                <TextBlock Text="GameDeck  /  v0.1.1" Style="{StaticResource MutedText}" FontSize="11" />
             </DockPanel>
         </StackPanel>
     </ScrollViewer>
